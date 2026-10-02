@@ -422,6 +422,8 @@ body.viewmode{padding-top:36px}
         <span class="hint" id="aptHint" style="display:none">✓ = כבר הצביעה</span></div>
       <div class="field"><label>שם בעל/ת הדירה <span class="req">*</span></label><input id="f_name" placeholder="ישראל ישראלי" autocomplete="name" /></div>
     </div>
+    <div class="field"><label>טלפון <span class="req">*</span></label><input id="f_phone" type="tel" inputmode="tel" placeholder="05X-XXXXXXX" autocomplete="tel" /></div>
+    <input type="hidden" id="f_ack" data-optional="1" value="" />
     <div class="ack-head">אני מאשר/ת שקראתי והבנתי: <span class="ack-cnt"><b id="ackN">0</b> מתוך <b id="ackT">6</b></span></div>
     <div id="ackList">
       <label class="declare ack"><input type="checkbox" class="f_ack" onchange="ackCount()" /><span><b>אופן ההצבעה</b> — כל דייר בוחר 3 מועמדים מתוך 4. שלושת המועמדים עם מספר הקולות הגבוה ביותר ייבחרו לוועד.</span></label>
@@ -488,11 +490,12 @@ body.viewmode{padding-top:36px}
 // ═══ הגדרות — הסקיל ממלא אותן ═══
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxn7f1-PycwsK8oh9uElLX_L6pe_bCwP7cg64k5YM97ybZ0GTssn3p5ziJX-vb47yVW/exec';      // ה-Backend המאוחד של בניין 110
 const FORM_KEY   = 'בחירת נציגי ועד';        // שם הלשונית בגיליון
-const FIELDS     = ['apt','name','choice'];       // שמות השדות בסדר קבוע (בלי 'declare')
+const FIELDS     = ['apt','name','phone','ack','choice'];       // שמות השדות בסדר קבוע (בלי 'declare')
 const TOTAL      = 52;                     // מספר הדירות בבניין (תפריט + מפה)
 const ELIGIBLE   = 47;                     // דירות מכורות — המכנה
 const UNSOLD     = [27, 31, 35, 39, 43];   // טרם נמכרו
 const PICK       = 3;                      // כמה מועמדים בוחרים
+const ACK_TEXT   = 'הסכימה לכל הסעיפים';
 const CANDS      = ["איתי בן שאול", "דנה ארפנשאד", "שנהב טפירו", "חי דביר"];
 const DEADLINE_DEFAULT = '2026-10-12T22:00:00+03:00'; // ISO כמו '2026-09-06T23:59:59+03:00', או '' לטופס ללא מועד
 const CHOICE_YES = '';      // ערך ה"כן" בשדה choice (למשל 'בעד'); '' אם אין שדה בחירה
@@ -606,6 +609,7 @@ function pickCand(el){
 function ackCount(){
   const acks = Array.from(document.querySelectorAll('.f_ack')), n = acks.filter(a => a.checked).length;
   document.getElementById('ackN').textContent = n; document.getElementById('ackT').textContent = acks.length;
+  document.getElementById('f_ack').value = (acks.length && n === acks.length) ? ACK_TEXT : '';
   acks.forEach(a => { if (a.checked) a.closest('.declare').classList.remove('invalid'); });
 }
 function selectChoice(v, el) {
@@ -670,6 +674,7 @@ document.getElementById('submitBtn').addEventListener('click', function(){
   const missing = acks.filter(a => !a.checked);
   acks.forEach(a => a.closest('.declare').classList.toggle('invalid', !a.checked));
   if (missing.length) { showErr('יש לסמן ✓ ליד כל אחד מ-' + acks.length + ' הסעיפים (חסרים ' + missing.length + ')'); missing[0].closest('.declare').scrollIntoView({ behavior:'smooth', block:'center' }); return; }
+  values.ack = ACK_TEXT;   // כולם מסומנים — נשמר בגיליון וב-PDF: "הסכימה לכל הסעיפים"; השרת דוחה בלי זה
   const dec = document.getElementById('f_declare');
   if (dec) {
     if (!dec.checked) { showErr('יש לאשר את ההצהרה'); dec.closest('.declare').classList.add('invalid'); return; }

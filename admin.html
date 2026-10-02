@@ -286,7 +286,7 @@ function render(entries){
   entries.forEach(e => { const ap = parseInt(e.apt); if (seenApt.has(ap)) return; seenApt.add(ap); String(e.choice || '').split(' | ').forEach(n => { if (n in tally) tally[n]++; }); });
   const sorted = CANDS.map(n => ({ n, c: tally[n] })).sort((x, y) => y.c - x.c), mx = Math.max(1, sorted[0].c);
   document.getElementById('tallyBody').innerHTML = sorted.map((r, k) => '<div style="display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;padding:7px 0;border-top:1px solid #f0f0f0"><b>' + esc(r.n) + (k < 3 ? ' <span style="font-size:11px;background:#e0f5ee;color:#0d6e52;border-radius:999px;padding:1px 8px">מוביל/ה</span>' : '') + '</b><span style="font-weight:800">' + r.c + '</span><div style="grid-column:1/-1;height:7px;background:#eee;border-radius:5px;overflow:hidden"><i style="display:block;height:100%;width:' + Math.round(r.c / mx * 100) + '%;background:#1D9E75"></i></div></div>').join('');
-  const labels = { apt:'דירה', name:'שם', phone:'טלפון', email:'מייל', choice:'הצבעה', floor:'קומה', sig:'חתימה', signature:'חתימה', ts:'מועד', prev:'בחירה קודמת', chg:'שינויים' };
+  const labels = { apt:'דירה', name:'שם', phone:'טלפון', email:'מייל', choice:'הצבעה', ack:'אישור סעיפים', floor:'קומה', sig:'חתימה', signature:'חתימה', ts:'מועד', prev:'בחירה קודמת', chg:'שינויים' };
   const cols = entries.length ? Object.keys(entries[0]).filter(c => c !== 'ts').concat('ts') : [];
   document.getElementById('thead').innerHTML = '<th>#</th>' + cols.map(c => '<th>' + esc(labels[c] || c) + '</th>').join('');
 
