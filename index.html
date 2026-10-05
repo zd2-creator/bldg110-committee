@@ -884,7 +884,7 @@ function renderStats(data){
         const fill = document.getElementById('tpFill'); fill.style.width = pctAll + '%'; fill.classList.toggle('done', done >= MAJORITY_TARGET);
         const mark = document.getElementById('tpMark');
         mark.style.display = ''; mark.style.insetInlineStart = Math.round(MAJORITY_TARGET / ELIGIBLE * 100) + '%';
-        document.getElementById('tpLeft').textContent = done >= MAJORITY_TARGET ? (data.tally ? '✓ הושג רוב — התוצאות פורסמו למעלה' : '✓ הושג רוב — התוצאות עדיין יכולות להשתנות בגלל הדירות שטרם הצביעו') : 'נשארו עוד ' + (MAJORITY_TARGET - done) + ' דירות לרוב';
+        document.getElementById('tpLeft').textContent = done >= MAJORITY_TARGET ? (data.tally ? '✓ הושג רוב — התוצאות פורסמו למעלה' : '✓ הושג רוב — הפער בין המקום ה-3 ל-4 עדיין יכול להשתנות בגלל הדירות שטרם הצביעו') : 'נשארו עוד ' + (MAJORITY_TARGET - done) + ' דירות לרוב';
         document.getElementById('tpGoal').textContent = 'הקו הכתום = רוב, ' + MAJORITY_TARGET + ' דירות (67% מ-' + ELIGIBLE + ' המכורות)';
       }
       renderResults(data, voted.length);
@@ -903,7 +903,8 @@ function renderResults(data, voted){
         ? '<p>ההצבעה חשאית. <b>התוצאות יתפרסמו כאן ברגע שהמקום השלישי מובטח</b> — אחרי שיצביעו ' + MAJORITY_TARGET + ' דירות (רוב של 67% מהדירות המכורות), וכשהדירות שטרם הצביעו כבר לא יוכלו לשנות מי שלושת הנבחרים. בכל מקרה הן יתפרסמו במועד הסגירה.</p>' +
           '<p>הצביעו עד כה <b>' + voted + '</b> · נשארו עוד <b>' + left + '</b> לרוב</p>'
         : '<p><b>✓ הושג רוב — ההצבעה תקפה.</b></p>' +
-          '<p><b>למה התוצאות עדיין לא נחשפות?</b> <b>' + rem + '</b> דירות עוד לא הצביעו, והקולות שלהן עדיין יכולים לשנות מי ייכנס לשלושת הנבחרים. כדי שלא יתפרסם משהו שישתנה אחר כך, התוצאות יתפרסמו כאן ברגע שהמקום השלישי יהיה מובטח — או במועד הסגירה.</p>') +
+          '<p><b>למה התוצאות עדיין לא נחשפות?</b> 3 מועמדים נבחרים ואחד נשאר בחוץ. כרגע הפער בקולות בין המועמד במקום השלישי למועמד במקום הרביעי <b>קטן ממספר הדירות שעוד לא הצביעו (' + rem + ')</b> — כלומר אם הן יצביעו, הרביעי עדיין יכול לעקוף את השלישי.</p>' +
+          '<p>התוצאות יתפרסמו כאן ברגע שהפער יהיה גדול ממספר הדירות שנותרו, כך שהסדר כבר לא יוכל להשתנות — או במועד הסגירה.</p>') +
       '<div class="sub">איש אינו רואה למי הצביעה דירה אחרת — גם לא בזמן ההצבעה וגם לא אחריה.</div></div>';
     return;
   }
