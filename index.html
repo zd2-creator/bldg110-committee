@@ -203,6 +203,7 @@
   .results .sealed .ic { font-size:40px; margin-bottom:6px; }
   .results .sealed p { font-size:14.5px; color:#444; line-height:1.7; }
   .results .sealed p b { color:#0d6e52; }
+  .results .sealed p.why { background:#f3f6f5; border-radius:8px; padding:9px 12px; text-align:right; }
   .results .sealed .sub { font-size:12.5px; color:#888; margin-top:6px; }
   .rrow { display:grid; grid-template-columns:1fr auto; gap:4px 12px; align-items:center; padding:10px 0; border-top:1px solid #f0f0f0; }
   .rrow:first-of-type { border-top:0; }
@@ -900,11 +901,11 @@ function renderResults(data, voted){
     const left = Math.max(0, MAJORITY_TARGET - voted), rem = data.remaining != null ? data.remaining : Math.max(0, ELIGIBLE - voted);
     body.innerHTML = '<div class="sealed"><div class="ic">🔒</div>' +
       (left
-        ? '<p>ההצבעה חשאית. <b>התוצאות יתפרסמו כאן ברגע שהמקום השלישי מובטח</b> — אחרי שיצביעו ' + MAJORITY_TARGET + ' דירות (רוב של 67% מהדירות המכורות), וכשהדירות שטרם הצביעו כבר לא יוכלו לשנות מי שלושת הנבחרים. בכל מקרה הן יתפרסמו במועד הסגירה.</p>' +
+        ? '<p>ההצבעה חשאית. <b>התוצאות יתפרסמו כאן ברגע שהמקום השלישי מובטח</b> — אחרי שיצביעו ' + MAJORITY_TARGET + ' דירות (רוב של 67% מהדירות המכורות), וכש<b>מספר הדירות שלא הצביעו קטן מהפער</b> בקולות בין המקום השלישי לרביעי — כך שגם אם כולן יצביעו, שלושת הנבחרים לא ישתנו. בכל מקרה הן יתפרסמו במועד הסגירה.</p>' +
           '<p>הצביעו עד כה <b>' + voted + '</b> · נשארו עוד <b>' + left + '</b> לרוב</p>'
         : '<p><b>✓ הושג רוב — ההצבעה תקפה.</b></p>' +
           '<p><b>למה התוצאות עדיין לא נחשפות?</b> 3 מועמדים נבחרים ואחד נשאר בחוץ. כרגע הפער בקולות בין המועמד במקום השלישי למועמד במקום הרביעי <b>קטן ממספר הדירות שעוד לא הצביעו (' + rem + ')</b> — כלומר אם הן יצביעו, הרביעי עדיין יכול לעקוף את השלישי.</p>' +
-          '<p>התוצאות יתפרסמו כאן ברגע שהפער יהיה גדול ממספר הדירות שנותרו, כך שהסדר כבר לא יוכל להשתנות — או במועד הסגירה.</p>') +
+          '<p class="why">📐 <b>הכלל:</b> התוצאות נחשפות כש<b>מספר הדירות שלא הצביעו קטן מהפער</b> בין המקום השלישי לרביעי. אז גם אם כולן יצביעו לרביעי, הוא לא יוכל להשיג את השלישי — והתוצאה לא יכולה להשתנות. או במועד הסגירה.</p>') +
       '<div class="sub">איש אינו רואה למי הצביעה דירה אחרת — גם לא בזמן ההצבעה וגם לא אחריה.</div></div>';
     return;
   }
@@ -917,7 +918,7 @@ function renderResults(data, voted){
     return '<div class="rrow' + (win ? '' : ' lost') + '"><div class="rn">' + escHtml(r.n) + (win ? '<span class="win">נבחר/ה ✓</span>' : '') + '</div>' +
       '<div class="rc">' + r.c + ' <small>קולות</small></div><div class="rb"><i style="width:' + Math.round(r.c / max * 100) + '%"></i></div></div>';
   }).join('') + '<div class="rfoot">' + voted + ' דירות הצביעו מתוך ' + ELIGIBLE + ' · כל דירה בחרה ' + PICK + ' מועמדים' + (tie ? ' · <b>תיקו על המקום השלישי — הנציגות תכריע</b>' : '') +
-    (data.decided && voted < ELIGIBLE ? '<br><b>✓ התוצאה סופית</b> — גם אם ' + (ELIGIBLE - voted) + ' הדירות שנותרו יצביעו, שלושת הנבחרים לא ישתנו.' : '') + '</div>';
+    (data.decided && voted < ELIGIBLE ? '<br><b>✓ התוצאה סופית</b> — הפער בין המקום השלישי לרביעי הוא <b>' + (rows[PICK - 1].c - rows[PICK].c) + '</b> קולות, ונותרו רק <b>' + (ELIGIBLE - voted) + '</b> דירות שלא הצביעו. גם אם כולן יצביעו, שלושת הנבחרים לא ישתנו.' : '') + '</div>';
 }
 const _done = loadDone();
 if (_done) renderDone(_done);
