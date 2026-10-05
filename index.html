@@ -408,7 +408,7 @@ body.viewmode{padding-top:36px}
     <style>.co-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid #f0f0f0;font-size:14.5px}.co-row:first-child{border-top:0}.co-row .num{font-size:18px;line-height:1.3}.co-row .note{font-size:13px;color:#555;margin-top:2px}.co-row .note b{color:#333}.rule{display:flex;gap:9px;align-items:flex-start;font-size:14px;margin:6px 0}.rule i{font-style:normal;color:#1D9E75;font-weight:800}</style>
     <p><b>📋 המועמדים לוועד</b></p>
     <div class="vote-opts"><div class="co-row"><span class="num">1️⃣</span><div><b>איתי בן שאול</b> — דירה 51<div class="note">🏠 <b>צפוי להתגורר בבניין</b></div></div></div><div class="co-row"><span class="num">2️⃣</span><div><b>דנה ארפנשאד</b> — דירה 49<div class="note">🏠 <b>צפויה להתגורר בבניין</b></div></div></div><div class="co-row"><span class="num">3️⃣</span><div><b>שנהב טפירו</b> — דירה 4<div class="note">🏠 <b>צפויה להתגורר בבניין</b></div></div></div><div class="co-row"><span class="num">4️⃣</span><div><b>חי דביר</b> — דירה 11<div class="note">🏠 <b>צפוי להתגורר בבניין החל מהשנה השנייה</b></div></div></div></div>
-    <p><b>🗳️ אופן ההצבעה</b><br>כל דייר בוחר <b>3 מועמדים בלבד</b> מתוך 4. שלושת המועמדים שיקבלו את מספר הקולות הגבוה ביותר ייבחרו לוועד הבית ויכהנו כ-3 נציגי הוועד הפעילים. <b>ההצבעה חשאית</b>: איש אינו רואה למי הצביעה דירה אחרת. התוצאות מתפרסמות בראש הדף ברגע שהן סופיות — כשהושג רוב (32 דירות) והדירות שטרם הצביעו כבר לא יכולות לשנות את הרכב הנבחרים — או במועד הסגירה.</p>
+    <p><b>🗳️ אופן ההצבעה</b><br>כל דייר בוחר <b>3 מועמדים בלבד</b> מתוך 4. שלושת המועמדים שיקבלו את מספר הקולות הגבוה ביותר ייבחרו לוועד הבית ויכהנו כ-3 נציגי הוועד הפעילים. <b>ההצבעה חשאית</b>: איש אינו רואה למי הצביעה דירה אחרת. התוצאות מתפרסמות בראש הדף ברגע שהמקום השלישי מובטח — כשהושג רוב (32 דירות) והדירות שטרם הצביעו כבר לא יכולות לשנות מי שלושת הנבחרים — או במועד הסגירה.</p>
     <p><b>💰 הטבה לנציגי הוועד</b><br>כל אחד משלושת הנציגים שייבחרו יהיה זכאי ל-<b>50% הנחה בדמי ועד הבית</b> במהלך תקופת כהונתו. עלות ההנחה תחולק באופן שווה בין כלל דיירי הבניין, כך שהתוספת לכל דירה תהיה מינימלית.</p>
     <p><b>📅 תקופת הכהונה והחלפת נציגים</b></p>
     <div class="rule"><i>•</i>תקופת הכהונה תהיה עד שנתיים ממועד הבחירה.</div>
@@ -511,7 +511,7 @@ const DEADLINE_DEFAULT = '2026-10-12T22:00:00+03:00'; // ISO כמו '2026-09-06T
 const CHOICE_YES = '';      // ערך ה"כן" בשדה choice (למשל 'בעד'); '' אם אין שדה בחירה
 const CHOICE_NO  = '';       // ערך ה"לא" (למשל 'נגד'); '' אם אין
 const MAJORITY_TARGET = 32; // מספר דירות "כן" לחגיגה (למשל 35 = 67%); 0 = בלי חגיגה
-const MAJORITY_SUB = 'הצביעו 32 דירות — רוב של 67% מהדירות המכורות. ההצבעה תקפה. התוצאות יתפרסמו בראש הדף ברגע שיהיו סופיות.';  // שורת הסבר בפופאפ, למשל 'נדרש רוב של 67% — ועברנו אותו!'
+const MAJORITY_SUB = 'הצביעו 32 דירות — רוב של 67% מהדירות המכורות. ההצבעה תקפה. התוצאות יתפרסמו בראש הדף ברגע שהמקום השלישי יהיה מובטח.';  // שורת הסבר בפופאפ, למשל 'נדרש רוב של 67% — ועברנו אותו!'
 // ═════════════════════════════════
 
 // ── שער כניסה ──
@@ -884,7 +884,7 @@ function renderStats(data){
         const fill = document.getElementById('tpFill'); fill.style.width = pctAll + '%'; fill.classList.toggle('done', done >= MAJORITY_TARGET);
         const mark = document.getElementById('tpMark');
         mark.style.display = ''; mark.style.insetInlineStart = Math.round(MAJORITY_TARGET / ELIGIBLE * 100) + '%';
-        document.getElementById('tpLeft').textContent = done >= MAJORITY_TARGET ? (data.tally ? '✓ הושג רוב — התוצאות פורסמו למעלה' : '✓ הושג רוב — ההצבעה תקפה. התוצאות יתפרסמו כשיהיו סופיות') : 'נשארו עוד ' + (MAJORITY_TARGET - done) + ' דירות לרוב';
+        document.getElementById('tpLeft').textContent = done >= MAJORITY_TARGET ? (data.tally ? '✓ הושג רוב — התוצאות פורסמו למעלה' : '✓ הושג רוב — ההצבעה תקפה. התוצאות יתפרסמו כשהמקום השלישי יהיה מובטח') : 'נשארו עוד ' + (MAJORITY_TARGET - done) + ' דירות לרוב';
         document.getElementById('tpGoal').textContent = 'הקו הכתום = רוב, ' + MAJORITY_TARGET + ' דירות (67% מ-' + ELIGIBLE + ' המכורות)';
       }
       renderResults(data, voted.length);
@@ -900,10 +900,10 @@ function renderResults(data, voted){
     const left = Math.max(0, MAJORITY_TARGET - voted), rem = data.remaining != null ? data.remaining : Math.max(0, ELIGIBLE - voted);
     body.innerHTML = '<div class="sealed"><div class="ic">🔒</div>' +
       (left
-        ? '<p>ההצבעה חשאית. <b>התוצאות יתפרסמו כאן כשיהיו סופיות</b>: אחרי שיצביעו ' + MAJORITY_TARGET + ' דירות (רוב של 67% מהדירות המכורות), וברגע שהדירות שטרם הצביעו כבר לא יוכלו לשנות את הרכב הנבחרים — או במועד הסגירה.</p>' +
+        ? '<p>ההצבעה חשאית. <b>התוצאות יתפרסמו כאן ברגע שהמקום השלישי מובטח</b> — אחרי שיצביעו ' + MAJORITY_TARGET + ' דירות (רוב של 67% מהדירות המכורות), וכשהדירות שטרם הצביעו כבר לא יוכלו לשנות מי שלושת הנבחרים. בכל מקרה הן יתפרסמו במועד הסגירה.</p>' +
           '<p>הצביעו עד כה <b>' + voted + '</b> · נשארו עוד <b>' + left + '</b> לרוב</p>'
-        : '<p><b>✓ הושג רוב — ההצבעה תקפה.</b> התוצאות עדיין לא סופיות: <b>' + rem + '</b> דירות טרם הצביעו, והקולות שלהן עדיין יכולים לשנות את הרכב הנבחרים.</p>' +
-          '<p>התוצאות יתפרסמו כאן ברגע שלא יוכלו להשתנות, או במועד הסגירה.</p>') +
+        : '<p><b>✓ הושג רוב — ההצבעה תקפה.</b> המקום השלישי עדיין לא מובטח: <b>' + rem + '</b> דירות טרם הצביעו, והקולות שלהן עדיין יכולים לשנות מי שלושת הנבחרים.</p>' +
+          '<p>התוצאות יתפרסמו כאן ברגע שהמקום השלישי יהיה מובטח, או במועד הסגירה.</p>') +
       '<div class="sub">איש אינו רואה למי הצביעה דירה אחרת — גם לא בזמן ההצבעה וגם לא אחריה.</div></div>';
     return;
   }
@@ -916,7 +916,7 @@ function renderResults(data, voted){
     return '<div class="rrow' + (win ? '' : ' lost') + '"><div class="rn">' + escHtml(r.n) + (win ? '<span class="win">נבחר/ה ✓</span>' : '') + '</div>' +
       '<div class="rc">' + r.c + ' <small>קולות</small></div><div class="rb"><i style="width:' + Math.round(r.c / max * 100) + '%"></i></div></div>';
   }).join('') + '<div class="rfoot">' + voted + ' דירות הצביעו מתוך ' + ELIGIBLE + ' · כל דירה בחרה ' + PICK + ' מועמדים' + (tie ? ' · <b>תיקו על המקום השלישי — הנציגות תכריע</b>' : '') +
-    (data.decided && voted < ELIGIBLE ? '<br><b>✓ התוצאה סופית</b> — גם אם ' + (ELIGIBLE - voted) + ' הדירות שנותרו יצביעו, הרכב הנבחרים לא ישתנה.' : '') + '</div>';
+    (data.decided && voted < ELIGIBLE ? '<br><b>✓ התוצאה סופית</b> — גם אם ' + (ELIGIBLE - voted) + ' הדירות שנותרו יצביעו, שלושת הנבחרים לא ישתנו.' : '') + '</div>';
 }
 const _done = loadDone();
 if (_done) renderDone(_done);
