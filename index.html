@@ -915,7 +915,7 @@ function renderResults(data, voted){
   const openNote = isClosed ? '' : '<div class="interim">⏳ <b>ההצבעה עדיין פתוחה' + (dl && dl !== 'open' ? ' עד ' + fmtDate(dl) : ' עד מועד הסגירה') + '</b> — ' +
     (data.decided
       ? 'אבל התוצאה כבר סופית: הפער בין המקום השלישי לרביעי (' + gap + ' קולות) גדול ממספר הדירות שטרם הצביעו (' + remaining + '), אז שלושת הנבחרים לא ישתנו.'
-      : 'אלה תוצאות ביניים. ' + remaining + ' דירות טרם הצביעו, והפער בין המקום השלישי לרביעי (' + gap + ' קולות) עדיין יכול להשתנות.') + '</div>';
+      : 'אלה תוצאות ביניים. ' + remaining + ' דירות טרם הצביעו. הפער בין המקום השלישי לרביעי: ' + gap + ' קולות.') + '</div>';
   body.innerHTML = openNote + rows.map((r, k) => {
     const win = r.c >= cut && (!tie || k < PICK) && r.c > 0;
     return '<div class="rrow' + (win ? '' : ' lost') + '"><div class="rn">' + escHtml(r.n) + (win ? '<span class="win">נבחר/ה ✓</span>' : '') + '</div>' +
